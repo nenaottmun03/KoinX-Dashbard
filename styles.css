@@ -1,0 +1,148 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  body {
+    background-color: #f4f7fa;
+    color: #333;
+    line-height: 1.6;
+  }
+  
+  /* Navbar */
+  .navbar {
+    background-color: #1a1a1a;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  
+  /* Container */
+  .container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 30px auto;
+  }
+  
+  /* Section Styling */
+  .section {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .section:hover {
+    transform: scale(1.02);
+  }
+  
+  .section h3 {
+    margin-bottom: 15px;
+    font-size: 22px;
+    color: #333;
+  }
+  
+  /* Coin List Styling */
+  .coin-list, .suggested-coins {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  /* Trending Coin Item */
+  .coin-item, .coin-card {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    width: 120px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+  }
+  
+  .coin-item:hover, .coin-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .coin-item img, .coin-card img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+  }
+  
+  /* TradingView Chart */
+  #tradingview_chart {
+    width: 100%;
+    height: 500px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Bitcoin Price Text */
+  #bitcoin-price {
+    font-size: 18px;
+    color: #222;
+    font-weight: bold;
+    background-color: #e9f5ff;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Button Styling (Optional) */
+  .button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+  }
+  
+  .button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .coin-item, .coin-card {
+      width: 100px;
+    }
+  
+    .section {
+      padding: 15px;
+    }
+  
+    .navbar {
+      font-size: 20px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .coin-item, .coin-card {
+      width: 80px;
+    }
+  
+    #tradingview_chart {
+      height: 300px;
+    }
+  }
+  

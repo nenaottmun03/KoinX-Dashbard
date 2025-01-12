@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Koinx Crypto Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="navbar">Koinx Crypto Dashboard</div>
+
+  <div class="container">
+    <div class="section">
+      <h3>Bitcoin Price Information</h3>
+      <p id="bitcoin-price">Loading...</p>
+    </div>
+
+    <div class="section">
+      <h3>Trending Coins (24h)</h3>
+      <div id="trending-coins">Loading...</div>
+    </div>
+
+    <div class="section">
+      <h3>Live Bitcoin Chart</h3>
+      <div id="tradingview_chart"></div>
+    </div>
+  </div>
+
+  <!-- TradingView Widget -->
+  <script>
+    const script = document.createElement('script');
+    script.src = 'https://s3.tradingview.com/tv.js';
+    script.onload = () => {
+      new TradingView.widget({
+        symbol: 'BINANCE:BTCUSDT',
+        interval: 'D',
+        theme: 'light',
+        container_id: 'tradingview_chart'
+      });
+    };
+    document.body.appendChild(script);
+  </script>
+
+  <!-- Fetch Data from Backend -->
+  <script>
+    // Fetch Bitcoin Price
+    fetch('/api/bitcoin')
+      .then(response => response.json())
+      .then(data => {
+        const price = data.bitcoin.usd;
+        const change = data.bitcoin.usd_24h_change.toFixed(2);
+        document.getElementById('bitcoin-price').innerHTML = `Price: $${price} <br> 24h Change: ${change}%`;
+      });
+
+    // Fetch Trending Coins
+    fetch('/api/trending')
+      .then(response => response.json())
+      .then(data => {
+        const trendingCoins = data.coins.slice(0, 3);
+        const container = document.getElementById('trending-coins');
+        container.innerHTML = trendingCoins.map(coin => `
+          <div>
+            <img src="${coin.item.small}" alt="${coin.item.name}">
+            <p>${coin.item.name} (${coin.item.symbol.toUpperCase()})</p>
+          </div>
+        `).join('');
+      });
+  </script>
+
+</body>
+</html>

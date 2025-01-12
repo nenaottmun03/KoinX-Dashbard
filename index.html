@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Koinx Crypto Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      background-color: #1a1a1a;
+      padding: 15px;
+      color: white;
+      text-align: center;
+      font-size: 24px;
+    }
+    .container {
+      padding: 20px;
+    }
+    .section {
+      background-color: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .coin-list, .suggested-coins {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+    .coin-item, .coin-card {
+      text-align: center;
+    }
+    .coin-item img, .coin-card img {
+      width: 50px;
+      height: 50px;
+    }
+    #tradingview_chart {
+      height: 500px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    Koinx Crypto Dashboard
+  </div>
+
+  <div class="container">
+
+    <!-- Crypto Info -->
+    <div class="section">
+      <h3>Bitcoin Price Information</h3>
+      <p id="bitcoin-price">Loading...</p>
+    </div>
+
+    <!-- TradingView Chart -->
+    <div class="section">
+      <h3>Bitcoin Live Chart</h3>
+      <div id="tradingview_chart"></div>
+    </div>
+
+    <!-- Trending Coins -->
+    <div class="section">
+      <h3>Trending Coins (24h)</h3>
+      <div class="coin-list" id="trending-coins">
+        Loading...
+      </div>
+    </div>
+
+    <!-- You May Also Like -->
+    <div class="section">
+      <h3>You May Also Like</h3>
+      <div class="suggested-coins" id="you-may-also-like">
+        Loading...
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TradingView Widget Script -->
+  <script>
+    const script = document.createElement('script');
+    script.src = 'https://s3.tradingview.com/tv.js';
+    script.async = true;
+    script.onload = () => {
+      new TradingView.widget({
+        symbol: 'BINANCE:BTCUSDT',
+        interval: 'D',
+        theme: 'light',
+        container_id: 'tradingview_chart'
+      });
+    };
+    document.body.appendChild(script);
+  </script>
+
+  <!-- Fetch Bitcoin Price and Trending Coins -->
+  <script>
+    // Fetch Bitcoin Price
+    fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd,inr&include_24hr_change=true')
+      .then(response => response.json())
+      .then(data => {
+        const price = data.bitcoin.usd;
+        const change = data.bitcoin.usd_24h_change.toFixed(2);
+        document.getElementById('bitcoin-price').innerHTML = `
+          Price: $${price} <br> 24h Change: ${change}%
+        `;
+      });
+
+    // Fetch Trending Coins
+    fetch('https://api.coingecko.com/api/v3/search/trending')
+      .then(response => response.json())
+      .then(data => {
+        const trendingCoins = data.coins.slice(0, 3);
+        const trendingContainer = document.getElementById('trending-coins');
+        const youMayLikeContainer = document.getElementById('you-may-also-like');
+
+        trendingContainer.innerHTML = '';
+        youMayLikeContainer.innerHTML = '';
+
+        trendingCoins.forEach(coin => {
+          const { name, symbol, small, market_cap_rank } = coin.item;
+
+          // Trending Coins Section
+          const coinDiv = document.createElement('div');
+          coinDiv.className = 'coin-item';
+          coinDiv.innerHTML = `
+            <img src="${small}" alt="${name}">
+            <p>${name} (${symbol.toUpperCase()})</p>
+          `;
+          trendingContainer.appendChild(coinDiv);
+
+          // You May Also Like Section
+          const likeDiv = document.createElement('div');
+          likeDiv.className = 'coin-card';
+          likeDiv.innerHTML = `
+            <img src="${small}" alt="${name}">
+            <p>${name} (${symbol.toUpperCase()})</p>
+            <p>Rank: ${market_cap_rank}</p>
+          `;
+          youMayLikeContainer.appendChild(likeDiv);
+        });
+      });
+  </script>
+
+</body>
+</html>
